@@ -67,7 +67,7 @@ function AdventureDataCollector:MissionCompleteHook(...)
     local mission = missionComplete.currentMission
 
     local missionDetails = {
-        version = 1,
+        dataVersion = 1,
         missionName = mission.name,
         winner = missionComplete.autoCombatResult.winner,
         missionLevel = mission.missionScalar,
@@ -147,10 +147,9 @@ SlashCmdList.ADVENTUREDATACOLLECTOR = function(msg, editBox)
 
     if msg == "clear" then
         db = defaultDb
-        AdventureDataCollectorDB = db
     elseif msg == "dump" then
         local jsonSerialized = SerializeJson(db)
-        local frame = addonTbl.CreateExportFrame(jsonSerialized)
+        local frame = addonTbl.GetExportFrame(jsonSerialized)
         frame:Show()
     end
 end
