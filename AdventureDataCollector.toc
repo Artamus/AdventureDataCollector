@@ -1,0 +1,9 @@
+## Interface: 90002
+## Title: AdventureDataCollector
+## Author: Artamus
+## Version: 0.0.1
+## Notes: Gathers troop and companion setups for missions, as well as their success rates
+## SavedVariables: AdventureDataCollectorDB
+
+AdventureDataCollector.lua
+ExportFrame.lua
