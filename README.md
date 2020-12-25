@@ -6,4 +6,4 @@ Install this addon like you would any other World of Warcraft Addon, to `Interfa
 
 # Usage
 
-Type `/adc` in game after enabling the addon to see all possible options
+Type `/adc` in game after enabling the addon to see all possible options.
