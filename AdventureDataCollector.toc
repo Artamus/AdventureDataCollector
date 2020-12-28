@@ -1,7 +1,7 @@
 ## Interface: 90002
 ## Title: AdventureDataCollector
 ## Author: Artamus
-## Version: 0.0.3
+## Version: 0.0.4
 ## Notes: Gathers troop and companion setups for missions, as well as their success rates
 ## SavedVariables: AdventureDataCollectorDB
 
