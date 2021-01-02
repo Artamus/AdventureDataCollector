@@ -1,0 +1,7 @@
+externals:
+  Libs/LibStub:
+    url: https://repos.wowace.com/wow/libstub/trunk
+    tag: 1.0
+  Libs/LibDeflate:
+    url: https://github.com/SafeteeWoW/LibDeflate.git
+    curse-slug: libdeflate
