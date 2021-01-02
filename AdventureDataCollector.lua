@@ -1,12 +1,13 @@
 local defaultDb = {missionData = {}}
 local _, addonTbl = ...
+local LibDeflate = LibStub:GetLibrary("LibDeflate")
 local b = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" -- You will need this for encoding/decoding
-local hooksecurefunc = _G["hooksecurefunc"]
 
 AdventureDataCollector = CreateFrame("Frame", "AdventureDataCollector", UIParent)
 AdventureDataCollector.initDone = false
 
 SLASH_ADVENTUREDATACOLLECTOR1 = "/adc"
+SLASH_ADVENTUREDATACOLLECTOR2 = "/adventuredatacollector"
 
 local function SerializeValue(val, type)
     if type == "string" then
@@ -113,7 +114,6 @@ function AdventureDataCollector:GARRISON_MISSION_COMPLETE_RESPONSE(
     _bonusRollSuccess,
     _followerDeaths,
     autoCombatResult)
-
     -- I do not care about the combat log
     local missionName = C_Garrison.GetMissionName(missionID)
     local mission = GetCompletedMissionInfo(missionID)
@@ -195,20 +195,17 @@ function AdventureDataCollector:EventHandler(event, ...)
     end
 end
 
-SlashCmdList.ADVENTUREDATACOLLECTOR = function(msg, editBox)
-    if msg == "" then
-        print("Available commands for AdvancedAdventureStats:")
-        print("    clear (clears all saved data)")
-        print("    dump (opens a window where the content is easily visible and copiable)")
-    end
+local resetData = function()
+    AdventureDataCollectorDB = defaultDb
+    print("Reset AdventureDataCollector data")
+end
 
-    if msg == "clear" then
-        AdventureDataCollectorDB = defaultDb
-    elseif msg == "dump" then
-        local jsonSerialized = SerializeJson(AdventureDataCollectorDB.missionData)
-        local frame = addonTbl.GetExportFrame(EncodeBase64(jsonSerialized))
-        frame:Show()
-    end
+SlashCmdList.ADVENTUREDATACOLLECTOR = function(msg, editBox)
+    local serialized = SerializeJson(AdventureDataCollectorDB.missionData)
+    local compressed = LibDeflate:CompressDeflate(serialized)
+    local encoded = EncodeBase64(compressed)
+    local frame = addonTbl.GetExportFrame(encoded, resetData)
+    frame:Show()
 end
 
 AdventureDataCollector:RegisterEvent("GARRISON_MISSION_COMPLETE_RESPONSE")
