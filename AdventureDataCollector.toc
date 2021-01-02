@@ -5,5 +5,7 @@
 ## Notes: Gathers troop and companion setups for missions, as well as their success rates
 ## SavedVariables: AdventureDataCollectorDB
 
+Libs\LibStub\LibStub.lua
+Libs\LibDeflate\LibDeflate.lua
 AdventureDataCollector.lua
 ExportUI.lua
