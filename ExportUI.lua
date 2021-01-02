@@ -2,7 +2,7 @@ local _, addonTbl = ...
 local ExportFrame = nil
 
 -- Credit for this goes to seriallos from the simc addon
-addonTbl.GetExportFrame = function(text, resetHandler)
+addonTbl.GetExportFrame = function(text, resetHandler, numMissions)
     if not ExportFrame then
         local f = CreateFrame("Frame", "ADCExportFrame", UIParent, "DialogBoxFrame")
         f:SetPoint("CENTER", nil, nil, 0, 0)
@@ -32,12 +32,14 @@ addonTbl.GetExportFrame = function(text, resetHandler)
             end
         )
 
+        ADCExportFrameButton:SetText("Close")
+
         -- Button to clear data
         local clearButton = CreateFrame("Button", "ADCExportClearButton", f)
         clearButton:SetPoint("LEFT", ADCExportFrameButton, "RIGHT", 0, 0)
         clearButton:SetSize(128, 32)
-        clearButton:SetText("Reset data")
         clearButton:SetNormalFontObject("GameFontNormalLarge")
+        clearButton:SetText("Reset data")
         clearButton:HookScript(
             "OnClick",
             function(self)
@@ -64,14 +66,20 @@ addonTbl.GetExportFrame = function(text, resetHandler)
         ptex:SetAllPoints()
         clearButton:SetPushedTexture(ptex)
 
+        -- Frame to display number of missions in storage
+        local missionCounter = CreateFrame("Frame", "ADCExportMissionCountFrame", f)
+        missionCounter:SetPoint("RIGHT", ADCExportFrameButton, "LEFT", 0, 0)
+        missionCounter:SetSize(128, 32)
+        missionCounter.text = missionCounter:CreateFontString(nil, nil, "GameFontNormalLarge")
+        missionCounter.text:SetPoint("CENTER", missionCounter, "CENTER", 0, 0)
+        missionCounter.text:SetText("")
+
         -- scroll frame
         local sf = CreateFrame("ScrollFrame", "ADCExportScrollFrame", f, "UIPanelScrollFrameTemplate")
         sf:SetPoint("LEFT", 16, 0)
         sf:SetPoint("RIGHT", -32, 0)
         sf:SetPoint("TOP", 0, -32)
         sf:SetPoint("BOTTOM", ADCExportFrameButton, "TOP", 0, 0)
-
-        ADCExportFrameButton:SetText("Close")
 
         -- edit box
         local eb = CreateFrame("EditBox", "ADCExportEditBox", ADCExportScrollFrame)
@@ -121,5 +129,8 @@ addonTbl.GetExportFrame = function(text, resetHandler)
 
     ADCExportEditBox:SetText(text)
     ADCExportEditBox:HighlightText()
+
+    local missionWord = numMissions == 1 and "mission" or "missions"
+    ADCExportMissionCountFrame.text:SetText("[" .. numMissions .. " " .. missionWord .. "]")
     return ExportFrame
 end

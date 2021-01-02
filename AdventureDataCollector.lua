@@ -204,7 +204,9 @@ SlashCmdList.ADVENTUREDATACOLLECTOR = function(msg, editBox)
     local serialized = SerializeJson(AdventureDataCollectorDB.missionData)
     local compressed = LibDeflate:CompressDeflate(serialized)
     local encoded = EncodeBase64(compressed)
-    local frame = addonTbl.GetExportFrame(encoded, resetData)
+
+    local numMissions = #AdventureDataCollectorDB.missionData
+    local frame = addonTbl.GetExportFrame(encoded, resetData, numMissions)
     frame:Show()
 end
 
